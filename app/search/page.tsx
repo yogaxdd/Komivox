@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { useSearchParams } from 'next/navigation';
+import Image from 'next/image';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import ComicGrid from '@/components/ComicGrid';
@@ -93,7 +94,7 @@ export default function SearchPage() {
         {query && (
           <div className="mb-8">
             <h1 className="text-3xl font-bold text-gray-900 mb-2">
-              Hasil Pencarian: "{query}"
+              Hasil Pencarian: &quot;{query}&quot;
             </h1>
             <p className="text-gray-600">
               {isLoading ? 'Mencari...' : `Ditemukan ${searchResults.length} hasil`}
@@ -135,10 +136,12 @@ export default function SearchPage() {
                 className="group relative bg-white rounded-xl shadow-md hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 overflow-hidden border border-gray-100 block"
               >
                 <div className="relative aspect-[3/4] overflow-hidden">
-                  <img
+                  <Image
                     src={comic.image}
                     alt={comic.title}
-                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+                    fill
+                    className="object-cover group-hover:scale-110 transition-transform duration-300"
+                    sizes="(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 20vw"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                   
@@ -181,7 +184,7 @@ export default function SearchPage() {
               Tidak Ada Hasil
             </h2>
             <p className="text-gray-600 mb-8">
-              Tidak ditemukan manga dengan kata kunci "{query}". 
+              Tidak ditemukan manga dengan kata kunci &quot;{query}&quot;. 
               Coba gunakan kata kunci yang berbeda.
             </p>
           </div>
