@@ -26,8 +26,8 @@ export default function GenreDetailPage() {
     try {
       setIsLoading(true);
       // Fallback to popular comics since genre-specific API is not available
-      const response = await comicAPI.getPopularComics(1);
-      setComics(response.comics);
+      const response = await comicAPI.getPopularComics();
+      setComics(response);
     } catch (error) {
       console.error('Error fetching comics by genre:', error);
     } finally {
