@@ -13,6 +13,7 @@ export interface Comic {
   source?: string;
   selector_used?: string;
   fetched_at?: string;
+  popularity?: number;
 }
 
 export interface SearchResult {
