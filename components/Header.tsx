@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { Search, Menu, X } from 'lucide-react';
 import Link from 'next/link';
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
 
 interface HeaderProps {
   onSearch?: (query: string) => void;
@@ -12,11 +13,16 @@ interface HeaderProps {
 export default function Header({ onSearch }: HeaderProps) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
+  const router = useRouter();
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
-    if (searchQuery.trim() && onSearch) {
-      onSearch(searchQuery.trim());
+    console.log('Search form submitted:', searchQuery); // Debug log
+    if (searchQuery.trim()) {
+      console.log('Navigating to search page'); // Debug log
+      // Always navigate to search page
+      router.push(`/search?q=${encodeURIComponent(searchQuery.trim())}`);
+      setSearchQuery(''); // Clear search after navigation
     }
   };
 

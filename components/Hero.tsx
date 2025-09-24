@@ -87,7 +87,7 @@ export default function Hero() {
             <div className="flex items-center justify-center mb-4">
               <BookOpen className="w-8 h-8 text-primary-500" />
             </div>
-            <div className="text-3xl font-bold text-gray-900 mb-2">10,000+</div>
+            <div className="text-3xl font-bold text-gray-900 mb-2">6,297+</div>
             <div className="text-gray-600">Judul Manga</div>
           </div>
           
@@ -95,7 +95,7 @@ export default function Hero() {
             <div className="flex items-center justify-center mb-4">
               <Users className="w-8 h-8 text-primary-500" />
             </div>
-            <div className="text-3xl font-bold text-gray-900 mb-2">500K+</div>
+            <div className="text-3xl font-bold text-gray-900 mb-2">-</div>
             <div className="text-gray-600">Pembaca Aktif</div>
           </div>
           

@@ -86,3 +86,25 @@ a {
 .fox-bounce {
   animation: foxBounce 2s infinite;
 }
+
+/* Hide scrollbar in fullscreen mode */
+.scrollbar-hide {
+  -ms-overflow-style: none;  /* Internet Explorer 10+ */
+  scrollbar-width: none;  /* Firefox */
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;  /* Safari and Chrome */
+}
+
+/* Hide scrollbar on mobile devices globally */
+@media (max-width: 768px) {
+  * {
+    -ms-overflow-style: none;  /* Internet Explorer 10+ */
+    scrollbar-width: none;  /* Firefox */
+  }
+  
+  *::-webkit-scrollbar {
+    display: none;  /* Safari and Chrome */
+  }
+}

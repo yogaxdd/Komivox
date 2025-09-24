@@ -14,6 +14,8 @@ export interface Comic {
   selector_used?: string;
   fetched_at?: string;
   popularity?: number;
+  slug?: string;
+  type?: string;
 }
 
 export interface SearchResult {

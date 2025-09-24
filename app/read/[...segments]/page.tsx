@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect, useRef, useCallback } from 'react';
-import { useParams } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { comicAPI } from '@/lib/api';
@@ -15,6 +15,7 @@ interface ChapterImage {
 
 export default function ReadPage() {
   const params = useParams();
+  const router = useRouter();
   const segments = params.segments as string[];
   
   const [images, setImages] = useState<string[]>([]);
@@ -23,6 +24,9 @@ export default function ReadPage() {
   const [error, setError] = useState<string | null>(null);
   const [showScrollTop, setShowScrollTop] = useState(false);
   const [visibleImages, setVisibleImages] = useState<Set<number>>(new Set([0, 1, 2])); // Load first 3 images
+  const [mangaSlug, setMangaSlug] = useState<string>('');
+  const [currentChapter, setCurrentChapter] = useState<string>('');
+  const [allChapters, setAllChapters] = useState<any[]>([]);
   const observerRef = useRef<IntersectionObserver | null>(null);
 
   const fetchChapterImages = useCallback(async () => {
@@ -30,6 +34,24 @@ export default function ReadPage() {
       setIsLoading(true);
       setError(null);
       const chapterPath = segments.join('/');
+      
+      // Extract manga slug and chapter from path
+      const pathParts = chapterPath.split('-chapter-');
+      if (pathParts.length === 2) {
+        const slug = pathParts[0];
+        const chapter = pathParts[1];
+        setMangaSlug(slug);
+        setCurrentChapter(chapter);
+        
+        // Fetch manga details to get all chapters
+        try {
+          const mangaDetail = await comicAPI.getComicDetail(slug);
+          setAllChapters(mangaDetail.chapters);
+        } catch (detailError) {
+          console.error('Error fetching manga details:', detailError);
+        }
+      }
+      
       const response = await comicAPI.getChapterImages(chapterPath);
       setImages(response.images);
     } catch (error) {
@@ -105,7 +127,43 @@ export default function ReadPage() {
   };
 
   const handleSearch = (query: string) => {
-    window.location.href = `/?search=${encodeURIComponent(query)}`;
+    router.push(`/search?q=${encodeURIComponent(query)}`);
+  };
+
+  // Find previous and next chapters
+  const getCurrentChapterIndex = () => {
+    return allChapters.findIndex(chapter => {
+      const chapterNum = chapter.link.split('-chapter-')[1]?.replace('/', '');
+      return chapterNum === currentChapter;
+    });
+  };
+
+  const getPreviousChapter = () => {
+    const currentIndex = getCurrentChapterIndex();
+    // For chapters, previous means higher chapter number (newer)
+    if (currentIndex >= 0 && currentIndex < allChapters.length - 1) {
+      return allChapters[currentIndex + 1];
+    }
+    return null;
+  };
+
+  const getNextChapter = () => {
+    const currentIndex = getCurrentChapterIndex();
+    // For chapters, next means lower chapter number (older)
+    if (currentIndex > 0) {
+      return allChapters[currentIndex - 1];
+    }
+    return null;
+  };
+
+  const isFirstChapter = () => {
+    const currentIndex = getCurrentChapterIndex();
+    return currentIndex === allChapters.length - 1; // Last in array = first chapter
+  };
+
+  const isLastChapter = () => {
+    const currentIndex = getCurrentChapterIndex();
+    return currentIndex === 0; // First in array = latest chapter
   };
 
   if (isLoading) {
@@ -159,7 +217,7 @@ export default function ReadPage() {
     <div className={`min-h-screen bg-gray-900 ${isFullscreen ? 'fixed inset-0 z-50' : ''}`}>
       {!isFullscreen && <Header onSearch={handleSearch} />}
       
-      <main className={`${isFullscreen ? 'h-screen overflow-y-auto' : 'py-8'}`}>
+      <main className={`${isFullscreen ? 'h-screen overflow-y-auto scrollbar-hide' : 'py-8'}`}>
         {/* Navigation Bar */}
         {!isFullscreen && (
           <div className="max-w-4xl mx-auto px-4 mb-6">
@@ -232,30 +290,63 @@ export default function ReadPage() {
                     <p className="text-sm">Loading page {index + 1}...</p>
                   </div>
                 )}
-                
-                {/* Page Number Overlay */}
-                <div className="absolute top-4 left-4 bg-black/70 text-white px-3 py-1 rounded-full text-sm font-medium z-10">
-                  {index + 1}
-                </div>
               </div>
             ))}
           </div>
 
-          {/* End of Chapter Message */}
+          {/* End of Chapter Message with Navigation */}
           <div className="mt-8 text-center bg-gray-800 rounded-lg p-8">
             <div className="text-4xl mb-4">🎉</div>
             <h3 className="text-white text-xl font-bold mb-2">Selesai!</h3>
             <p className="text-gray-300 mb-6">Anda telah menyelesaikan chapter ini.</p>
+            
+            {/* Chapter Navigation */}
+            <div className="flex flex-col sm:flex-row gap-4 justify-center mb-6">
+              {/* Show Previous Chapter button (newer chapter) - always show if available */}
+              {getPreviousChapter() && (
+                <Link
+                  href={`/read/${getPreviousChapter()?.link.replace(/^\//, '').replace(/\/$/, '')}`}
+                  className="bg-blue-500 hover:bg-blue-600 text-white px-6 py-3 rounded-lg font-semibold transition-colors duration-200 flex items-center justify-center"
+                >
+                  ← Chapter Sebelumnya
+                </Link>
+              )}
+              
+              {/* Show Next Chapter button (older chapter) - always show if available */}
+              {getNextChapter() && (
+                <Link
+                  href={`/read/${getNextChapter()?.link.replace(/^\//, '').replace(/\/$/, '')}`}
+                  className="bg-green-500 hover:bg-green-600 text-white px-6 py-3 rounded-lg font-semibold transition-colors duration-200 flex items-center justify-center"
+                >
+                  Chapter Selanjutnya →
+                </Link>
+              )}
+              
+              {/* Special message for latest chapter */}
+              {isLastChapter() && !getPreviousChapter() && (
+                <div className="bg-yellow-500 text-white px-6 py-3 rounded-lg font-semibold flex items-center justify-center">
+                  🎊 Manga Tamat - Chapter Terakhir
+                </div>
+              )}
+            </div>
+
+            {/* Other Actions */}
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link
-                href="/"
+                href={`/manga/${mangaSlug}`}
                 className="bg-primary-500 hover:bg-primary-600 text-white px-6 py-3 rounded-lg font-semibold transition-colors duration-200"
+              >
+                Daftar Chapter
+              </Link>
+              <Link
+                href="/"
+                className="bg-gray-700 hover:bg-gray-600 text-white px-6 py-3 rounded-lg font-semibold transition-colors duration-200"
               >
                 Kembali ke Beranda
               </Link>
               <button
                 onClick={scrollToTop}
-                className="bg-gray-700 hover:bg-gray-600 text-white px-6 py-3 rounded-lg font-semibold transition-colors duration-200"
+                className="bg-gray-600 hover:bg-gray-500 text-white px-6 py-3 rounded-lg font-semibold transition-colors duration-200"
               >
                 Scroll ke Atas
               </button>
