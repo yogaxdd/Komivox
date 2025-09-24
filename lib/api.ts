@@ -133,13 +133,25 @@ class ComicAPI {
     }
   }
 
-  async getPopularComics(page: number = 1): Promise<ComicResponse> {
+  async getPopularComics(): Promise<Comic[]> {
     try {
-      const response = await this.axiosInstance.get(`/comic/populer?page=${page}`);
-      return response.data;
+      const response = await fetch(`${API_BASE_URL}/comic/popular`);
+      const data = await response.json();
+      return data.comics || [];
     } catch (error) {
       console.error('Error fetching popular comics:', error);
-      throw new Error('Failed to fetch popular comics');
+      return [];
+    }
+  }
+
+  async getAllComics(): Promise<Comic[]> {
+    try {
+      const response = await fetch(`${API_BASE_URL}/comic/unlimited`);
+      const data = await response.json();
+      return data.comics || [];
+    } catch (error) {
+      console.error('Error fetching all comics:', error);
+      return [];
     }
   }
 

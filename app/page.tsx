@@ -11,10 +11,8 @@ import { comicAPI, Comic, SearchResult } from '@/lib/api';
 
 export default function Home() {
   const [latestComics, setLatestComics] = useState<Comic[]>([]);
-  const [popularComics, setPopularComics] = useState<Comic[]>([]);
   const [searchResults, setSearchResults] = useState<SearchResult[]>([]);
   const [isLoadingLatest, setIsLoadingLatest] = useState(true);
-  const [isLoadingPopular, setIsLoadingPopular] = useState(true);
   const [isSearching, setIsSearching] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [scrollOffset, setScrollOffset] = useState(0);
@@ -23,7 +21,6 @@ export default function Home() {
 
   useEffect(() => {
     fetchLatestComics();
-    fetchPopularComics();
   }, []);
 
   const fetchLatestComics = async () => {
@@ -77,17 +74,6 @@ export default function Home() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, [loadMoreComics, searchQuery]);
 
-  const fetchPopularComics = async () => {
-    try {
-      setIsLoadingPopular(true);
-      const response = await comicAPI.getPopularComics(1);
-      setPopularComics(response.comics.slice(0, 10)); // Show first 10
-    } catch (error) {
-      console.error('Error fetching popular comics:', error);
-    } finally {
-      setIsLoadingPopular(false);
-    }
-  };
 
   const handleSearch = async (query: string) => {
     try {
@@ -218,12 +204,6 @@ export default function Home() {
             </div>
           )}
           
-          <ComicGrid
-            comics={popularComics}
-            title="Manga Populer"
-            showPopularity={true}
-            isLoading={isLoadingPopular}
-          />
         </>
       )}
       

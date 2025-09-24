@@ -129,7 +129,7 @@ export default function SearchPage() {
 
         {!isLoading && searchResults.length > 0 && (
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
-            {searchResults.map((comic, index) => (
+            {searchResults.filter(comic => comic.title && comic.title.trim() !== '').map((comic, index) => (
               <a 
                 key={`${comic.title}-${index}`} 
                 href={`/manga/${comic.slug}`}
@@ -177,11 +177,11 @@ export default function SearchPage() {
           </div>
         )}
 
-        {!isLoading && query && searchResults.length === 0 && !error && (
+        {!isLoading && query && (searchResults.length === 0 || searchResults.filter(comic => comic.title && comic.title.trim() !== '').length === 0) && !error && (
           <div className="text-center py-16">
             <div className="text-6xl mb-4">😔</div>
             <h2 className="text-2xl font-bold text-gray-900 mb-4">
-              Tidak Ada Hasil
+              Tidak Ada Hasil Ditemukan
             </h2>
             <p className="text-gray-600 mb-8">
               Tidak ditemukan manga dengan kata kunci &quot;{query}&quot;. 

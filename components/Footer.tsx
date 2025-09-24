@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { Heart, Github, Twitter, Instagram } from 'lucide-react';
+import { Heart, Github, Instagram } from 'lucide-react';
 import Image from 'next/image';
 
 export default function Footer() {
@@ -30,13 +30,10 @@ export default function Footer() {
               Nikmati pengalaman membaca yang menyenangkan dengan update terbaru setiap hari.
             </p>
             <div className="flex space-x-4">
-              <a href="#" className="text-gray-400 hover:text-primary-500 transition-colors duration-200">
-                <Twitter className="w-5 h-5" />
-              </a>
-              <a href="#" className="text-gray-400 hover:text-primary-500 transition-colors duration-200">
+              <a href="https://instagram.com/yogakokxd" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-primary-500 transition-colors duration-200">
                 <Instagram className="w-5 h-5" />
               </a>
-              <a href="#" className="text-gray-400 hover:text-primary-500 transition-colors duration-200">
+              <a href="https://github.com/yogaxdd" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-primary-500 transition-colors duration-200">
                 <Github className="w-5 h-5" />
               </a>
             </div>
@@ -62,56 +59,19 @@ export default function Footer() {
                 </Link>
               </li>
               <li>
-                <Link href="/genre" className="text-gray-400 hover:text-white transition-colors duration-200">
-                  Daftar Genre
+                <Link href="/all-manga" className="text-gray-400 hover:text-white transition-colors duration-200">
+                  All Manga
                 </Link>
               </li>
             </ul>
           </div>
 
-          {/* Categories */}
-          <div>
-            <h3 className="text-lg font-semibold mb-4">Genre Populer</h3>
-            <ul className="space-y-2">
-              <li>
-                <Link href="/genre/action" className="text-gray-400 hover:text-white transition-colors duration-200">
-                  Action
-                </Link>
-              </li>
-              <li>
-                <Link href="/genre/romance" className="text-gray-400 hover:text-white transition-colors duration-200">
-                  Romance
-                </Link>
-              </li>
-              <li>
-                <Link href="/genre/comedy" className="text-gray-400 hover:text-white transition-colors duration-200">
-                  Comedy
-                </Link>
-              </li>
-              <li>
-                <Link href="/genre/fantasy" className="text-gray-400 hover:text-white transition-colors duration-200">
-                  Fantasy
-                </Link>
-              </li>
-            </ul>
-          </div>
         </div>
 
         <div className="border-t border-gray-800 mt-8 pt-8">
           <div className="flex flex-col md:flex-row justify-between items-center">
-            <div className="text-gray-400 text-sm mb-4 md:mb-0">
-              © 2024 Komivox. Dibuat dengan <Heart className="w-4 h-4 text-red-500 inline mx-1" /> untuk para pecinta manga.
-            </div>
-            <div className="flex space-x-6 text-sm">
-              <Link href="/privacy" className="text-gray-400 hover:text-white transition-colors duration-200">
-                Kebijakan Privasi
-              </Link>
-              <Link href="/terms" className="text-gray-400 hover:text-white transition-colors duration-200">
-                Syarat & Ketentuan
-              </Link>
-              <Link href="/contact" className="text-gray-400 hover:text-white transition-colors duration-200">
-                Kontak
-              </Link>
+            <div className="text-gray-400 text-sm">
+              © 2025 Komivox. Dibuat dengan <Heart className="w-4 h-4 text-red-500 inline mx-1" /> @yogakokxd
             </div>
           </div>
         </div>

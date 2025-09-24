@@ -46,8 +46,8 @@ export default function Header({ onSearch }: HeaderProps) {
             </div>
           </Link>
 
-          {/* Desktop Navigation */}
-          <nav className="hidden md:flex items-center space-x-8">
+          {/* Desktop Navigation - Centered */}
+          <nav className="hidden md:flex items-center justify-center space-x-8 flex-1">
             <Link 
               href="/" 
               className="text-gray-700 hover:text-primary-600 font-medium transition-colors duration-200"
@@ -67,10 +67,10 @@ export default function Header({ onSearch }: HeaderProps) {
               Populer
             </Link>
             <Link 
-              href="/genre" 
+              href="/all-manga" 
               className="text-gray-700 hover:text-primary-600 font-medium transition-colors duration-200"
             >
-              Genre
+              All Manga
             </Link>
           </nav>
 
@@ -82,7 +82,7 @@ export default function Header({ onSearch }: HeaderProps) {
                 placeholder="Cari manga..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-64 pl-10 pr-4 py-2 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                className="w-64 pl-10 pr-4 py-2 bg-white text-gray-900 placeholder-gray-500 border-2 border-primary-500 rounded-full focus:outline-none focus:ring-2 focus:ring-primary-600 focus:border-primary-600"
               />
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
             </div>
@@ -129,11 +129,11 @@ export default function Header({ onSearch }: HeaderProps) {
                 Populer
               </Link>
               <Link 
-                href="/genre" 
+                href="/all-manga" 
                 className="text-gray-700 hover:text-primary-600 font-medium"
                 onClick={() => setIsMenuOpen(false)}
               >
-                Genre
+                All Manga
               </Link>
             </nav>
             
@@ -145,7 +145,7 @@ export default function Header({ onSearch }: HeaderProps) {
                   placeholder="Cari manga..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                  className="w-full pl-10 pr-4 py-2 bg-white text-gray-900 placeholder-gray-500 border-2 border-primary-500 rounded-full focus:outline-none focus:ring-2 focus:ring-primary-600 focus:border-primary-600"
                 />
                 <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
               </div>
