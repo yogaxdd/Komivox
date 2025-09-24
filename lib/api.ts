@@ -149,7 +149,7 @@ class ComicAPI {
       return {
         results: apiData.data.map((item: any) => ({
           title: item.title,
-          href: item.href,
+          href: item.slug || item.href.replace('/detail-komik/', '').replace(/\/$/, ''),
           thumbnail: item.thumbnail,
           description: item.description,
           type: item.type,
