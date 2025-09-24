@@ -25,11 +25,26 @@ export default function ReadPage() {
   const [visibleImages, setVisibleImages] = useState<Set<number>>(new Set([0, 1, 2])); // Load first 3 images
   const observerRef = useRef<IntersectionObserver | null>(null);
 
+  const fetchChapterImages = useCallback(async () => {
+    try {
+      setIsLoading(true);
+      setError(null);
+      const chapterPath = segments.join('/');
+      const response = await comicAPI.getChapterImages(chapterPath);
+      setImages(response.images);
+    } catch (error) {
+      console.error('Error fetching chapter images:', error);
+      setError('Gagal memuat chapter. Silakan coba lagi.');
+    } finally {
+      setIsLoading(false);
+    }
+  }, [segments]);
+
   useEffect(() => {
     if (segments && segments.length > 0) {
       fetchChapterImages();
     }
-  }, [segments]);
+  }, [segments, fetchChapterImages]);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -80,21 +95,6 @@ export default function ReadPage() {
       }
     };
   }, [images.length, setupObserver]);
-
-  const fetchChapterImages = async () => {
-    try {
-      setIsLoading(true);
-      setError(null);
-      const chapterPath = segments.join('/');
-      const response = await comicAPI.getChapterImages(chapterPath);
-      setImages(response.images);
-    } catch (error) {
-      console.error('Error fetching chapter images:', error);
-      setError('Gagal memuat chapter. Silakan coba lagi.');
-    } finally {
-      setIsLoading(false);
-    }
-  };
 
   const toggleFullscreen = () => {
     setIsFullscreen(!isFullscreen);

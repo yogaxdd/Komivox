@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useCallback } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import Header from '@/components/Header';
 import Hero from '@/components/Hero';
 import ComicGrid from '@/components/ComicGrid';
@@ -125,7 +126,7 @@ export default function Home() {
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="flex items-center justify-between mb-8">
               <h2 className="text-3xl font-bold text-gray-900">
-                Hasil Pencarian: "{searchQuery}"
+                Hasil Pencarian: &quot;{searchQuery}&quot;
               </h2>
               <button
                 onClick={clearSearch}
@@ -156,10 +157,12 @@ export default function Home() {
                 {searchResults.map((result, index) => (
                   <div key={index} className="group relative bg-white rounded-xl shadow-md hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 overflow-hidden border border-gray-100">
                     <div className="relative aspect-[3/4] overflow-hidden">
-                      <img
+                      <Image
                         src={result.thumbnail}
                         alt={result.title}
-                        className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+                        fill
+                        className="object-cover group-hover:scale-110 transition-transform duration-300"
+                        sizes="(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 20vw"
                       />
                       <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                       
