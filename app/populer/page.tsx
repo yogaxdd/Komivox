@@ -21,10 +21,11 @@ export default function PopulerPage() {
   const fetchPopularComics = async (page: number) => {
     try {
       setIsLoading(true);
-      const response = await comicAPI.getPopularComics(page);
-      setComics(response.comics);
-      setTotalPages(Math.ceil(response.pagination.total / response.pagination.per_page));
-      setHasMore(response.pagination.has_more);
+      const response = await comicAPI.getPopularComics();
+      setComics(response);
+      // Since getPopularComics doesn't support pagination, set static values
+      setTotalPages(1);
+      setHasMore(false);
     } catch (error) {
       console.error('Error fetching popular comics:', error);
     } finally {
